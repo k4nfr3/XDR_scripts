@@ -1,0 +1,4 @@
+dataset = xdr_data 
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id =  4771
+| fields action_evtlog_message 
+
