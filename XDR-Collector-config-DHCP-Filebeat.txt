@@ -1,0 +1,25 @@
+filebeat.inputs:
+- type: filestream
+  enabled: true
+  paths:
+    - c:\Windows\System32\dhcp\DhcpSrvLog*.log
+
+processors:
+    - dissect:
+        tokenizer: "%{id},%{date},%{time},%{description},%{ipAddress},%{hostName},%{macAddress},%{userName},%{transactionID},%{qResult},%{probationTime},%{correlationID},%{dhcid},%{vendorClassHex},%{vendorClassASCII},%{userClassHex},%{userClassASCII},%{relayAgentInformation},%{dnsRegError}"
+    - drop_event.when.not.regexp.message: "^[0-9]+,.*"
+    - drop_fields:
+        fields: ["message"]
+    - add_locale: ~
+    - rename:
+        fields:
+          - from: "event.timezone"
+            to: "dissect.timezone"
+        ignore_missing: false
+        fail_on_error: false    
+    - add_cloud_metadata: ~
+    - add_docker_metadata: ~
+    - add_kubernetes_metadata: ~
+    - add_tags:
+        tags: [windows_dhcp]
+        target: "xdr_log_type"
