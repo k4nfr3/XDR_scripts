@@ -8,6 +8,7 @@ dataset = xdr_data // Using the xdr dataset
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000064", "User name does not exist", Failure_Reason)
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC000006A", "Password is wrong", Failure_Reason)
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000234", "User is currently locked out", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000072", "account is currently disabled", Failure_Reason)
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC000006F", "User tried to logon outside his day of week or time of day restriction", Failure_Reason)
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000070", "Workstation restriction", Failure_Reason)
  | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000193", "Account expiration", Failure_Reason)
