@@ -10,4 +10,4 @@
 
   fullmemorydump.py is as you might expect to run winpmem to get the entire memory dump for Forensic purpose.
 
-
+## a few XDR Collector Filebeat configurations
