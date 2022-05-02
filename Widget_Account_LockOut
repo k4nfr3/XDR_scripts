@@ -1,0 +1,8 @@
+dataset = xdr_data 
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id =  4740
+| alter EventFromComputer =arrayindex(regextract(action_evtlog_message, ".*Account Name:.*?(\w.*)\r\n"),0), SecurityID = arrayindex(regextract(action_evtlog_message, ".*Security ID:.*?(\w.*)\r\n"),0)
+| alter Computer = json_extract(action_evtlog_data_fields,"$.TargetDomainName")
+| alter AccountName = json_extract(action_evtlog_data_fields,"$.TargetUserName")
+| alter AccountName = trim(AccountName,"\"")
+| alter Computer = trim(Computer,"\"")
+| fields AccountName, Computer, EventFromComputer ,  SecurityID
