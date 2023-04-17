@@ -1,0 +1,18 @@
+dataset = xdr_data // Using the xdr dataset
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4624
+| alter User_Name = replace(json_extract(action_evtlog_data_fields, "$.TargetUserName"),"\"","")
+| alter Domain_Name = replace(json_extract(action_evtlog_data_fields, "$.TargetDomainName"),"\"","")
+| alter Logon_Type = replace(json_extract(action_evtlog_data_fields, "$.LogonType"),"\"","")
+| filter (Domain_Name not in ("Font Driver Host", "Window Manager")) 
+| filter Logon_Type != "11"
+| alter Logon_type_desc = ""
+| alter Logon_type_desc  = if(Logon_Type = "2", "Interactive", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "3", "Network", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "4", "Batch", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "5", "Service", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "7", "Unlock", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "8", "NetworkClearText", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "9", "NewCreds like RunAs", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "10", "RemoteInteractive like RDP", Logon_type_desc)
+| alter Logon_type_desc  = if(Logon_Type = "11", "CachedInteractive", Logon_type_desc)
+| fields agent_hostname , agent_ip_addresses , actor_effective_username , User_Name, Domain_Name, Logon_Type, Logon_type_desc

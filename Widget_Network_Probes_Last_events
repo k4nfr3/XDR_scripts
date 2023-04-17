@@ -1,0 +1,7 @@
+dataset = panw_ngfw_traffic_raw 
+| fields _time, log_source_name 
+| alter currenttime = current_time()
+| comp latest(_time) as LastTime by log_source_name,currenttime
+| alter DiffMinutes = timestamp_diff( LastTime , currenttime, "MINUTE" ) 
+| fields log_source_name, LastTime , DiffMinutes 
+| sort asc log_source_name 

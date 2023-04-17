@@ -1,0 +1,11 @@
+dataset = xdr_data 
+| filter agent_hostname = "MYPC" 
+| filter event_type = ENUM.PROCESS 
+| alter myhour = extract_time(_time , "HOUR")
+| alter myday = extract_time(_time , "DAY")
+| alter mymonth = extract_time(_time , "MONTH")
+| alter myyear = extract_time(_time , "YEAR")
+| alter when = concat(to_string(myyear), ".", to_string(mymonth) , "." , to_string(myday) , " " , to_string(myhour) , "h")
+| comp count(event_id) as total by when 
+| sort asc when
+| view graph type = line xaxis = when yaxis = total 

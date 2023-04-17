@@ -1,0 +1,6 @@
+config case_sensitive = false
+| preset = xdr_image_load 
+| filter action_module_path ~= ".*\.sys$"
+| filter event_type = ENUM.LOAD_IMAGE 
+| filter action_module_path contains "temp" 
+| filter action_module_path not contains "C:\Windows\System32\"

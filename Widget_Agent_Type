@@ -1,0 +1,4 @@
+dataset = endpoints 
+| filter endpoint_status= ENUM.CONNECTED  OR endpoint_status= ENUM.DISCONNECTED 
+| comp count(endpoint_id ) as nbr_devices by endpoint_type
+| view graph type = pie subtype = full xaxis = endpoint_type yaxis = nbr_devices valuecolor("TYPE_WORKSTATION","#0fd1ee") valuecolor("TYPE_SERVER","#d407fa") seriestitle("nbr_devices","Device Type") 

@@ -1,0 +1,10 @@
+dataset = forensics_event_log 
+| filter SOURCE = "Security"
+| filter (event_id = 4624) 
+// en Francais
+| alter Logon_Type_FR = arrayindex(regextract(MESSAGE, "Type d'ouverture de session.*?(\d+)\r\n"),0)
+// English version
+| alter Logon_Type_EN = arrayindex(regextract(MESSAGE, "Logon Type.*?(\d+)\r\n"),0)
+| alter Logon_Type_EN2 = arrayindex(regextract(MESSAGE, "LogonType=.*?(\d+)"),0)
+| filter (Logon_Type_EN = "10") or (Logon_Type_EN2 = "10") or (Logon_Type_FR = "10")
+| alter event_generated2 = to_timestamp(event_generated,"MILLIS")

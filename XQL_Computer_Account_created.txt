@@ -1,0 +1,17 @@
+dataset = xdr_data 
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id =  4741
+| filter action_evtlog_message ~= ".*A computer account was created.*"
+| alter AccountName = arrayindex(regextract(action_evtlog_message, ".*Account Name:.*?(\w.*)\r\n"),0),  AccountDomain = arrayindex(regextract(action_evtlog_message, "Account Domain:.*?(\w.*)\r\n"),0), SAM = arrayindex(regextract(action_evtlog_message, ".*SAM Account Name:.*?(\w.*)\r\n"),0), PrivilegeList = arrayindex(regextract(action_evtlog_message, ".*Privileges.*?(\w.*)\r\n"),0)
+ | fields  AccountName as Creator_Account, AccountDomain as Domain , SAM as Account_created, PrivilegeList, action_evtlog_event_id, action_evtlog_message  as raw  // Select all the fields to show them
+
+
+
+XDR BIOC Rule
+=============
+dataset = xdr_data 
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id =  4741
+| filter action_evtlog_message ~= ".*A computer account was created.*"
+| alter AccountName = arrayindex(regextract(action_evtlog_message, ".*Account Name:.*?(\w.*)\r\n"),0)
+| filter AccountName ~= ".*\$.*"
+
+in a nutshell, if a computer account was created from another computer account

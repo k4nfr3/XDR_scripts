@@ -1,0 +1,19 @@
+The proposed SQL query for EventId 4625 was missing the Logon Failure Codes
+
+Here is a new proposal to add column FailCode and adds explaination in Failure_Reason
+
+dataset = xdr_data // Using the xdr dataset
+ | filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4625 // Filtering by windows event log and id 4625
+ | alter User_Name =arrayindex(regextract(action_evtlog_message, "Account For Which Logon Failed:\r\n.*\r\n.*Account Name:.*?(\w.*)\r\n"),0), Logon_Type = arrayindex(regextract(action_evtlog_message, "Logon Type:.*?(\d+)\r\n"),0), Failure_Reason = arrayindex(regextract(action_evtlog_message,"Failure Reason:.*?(\w.*)\r\n"),0), Domain = arrayindex(regextract(action_evtlog_message, "Account For Which Logon Failed:\r\n.*\r\n.*.*\r\n.*Account Domain:.*?(\w.*?)\r\n"),0), Source_IP = arrayindex(regextract(action_evtlog_message, "Source Network Address:.*?(\d+\.\d+\.\d+\.\d+)\r\n"),0), Caller_Process_Name = arrayindex(regextract(action_evtlog_message, "Caller Process Name:.*?(\w.*)\r\n"),0), Host_Name = arrayindex(regextract(action_evtlog_message, "Workstation Name:.*?(\w.*)\r\n"),0), FailCode = arrayindex(regextract(action_evtlog_message, "Sub Status:.*?(\w.*)\r\n"),0)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000064", "User name does not exist", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC000006A", "Password is wrong", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000234", "User is currently locked out", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000072", "account is currently disabled", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC000006F", "User tried to logon outside his day of week or time of day restriction", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000070", "Workstation restriction", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000193", "Account expiration", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000071", "Expired password", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000133", "Clock between DC and other computer too far out of sync", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC0000224", "User is required to change password at next logon", Failure_Reason)
+ | alter Failure_Reason  = if(FailCode CONTAINS "0xC000015b", "The user has not been granted the requested logon type (aka logon right) at this machine", Failure_Reason)
+ | fields User_Name, Host_Name, Domain, Logon_Type, FailCode, Failure_Reason, Source_IP, Caller_Process_Name // Select all the fields to show them

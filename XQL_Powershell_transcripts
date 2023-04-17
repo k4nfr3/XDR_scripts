@@ -1,0 +1,7 @@
+config case_sensitive = false  
+| preset = xdr_event_log
+| filter agent_hostname ~="mypc"
+| filter (action_evtlog_description = "AmsiScanBuffer " and action_evtlog_event_id = 1101) 
+| alter Content = json_extract(action_evtlog_data_fields, "$.content")
+| alter Session = json_extract(action_evtlog_data_fields, "$.session")
+| fields Session, Content

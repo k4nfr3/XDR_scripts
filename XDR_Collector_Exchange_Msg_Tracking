@@ -1,0 +1,24 @@
+filebeat.inputs:
+- type: filestream
+  enabled: true
+  paths:
+    - C:\MessageTracking\*.LOG
+
+  processors:
+    - dissect:
+        tokenizer: "%{date-time},%{client-ip},%{client-hostname},%{server-ip},%{server-hostname},\"%{source-context}\",%{connector-id},%{source},%{event-id},%{internal-message-id},%{message-id},%{network-message-id},%{recipient-address},%{recipient-status},%{total-bytes|integer},%{recipient-count|integer},%{related-recipient-address},%{reference},%{message-subject},%{sender-address},%{return-path},%{message-info},%{directionality},%{tenant-id},%{original-client-ip},%{original-server-ip},%{custom-data},%{transport-traffic-type},%{log-id},%{schema-version}"
+        field: "message"
+    - add_fields:
+        fields:
+          vendor: Microsoft
+          product: Exchange
+    - add_locale: ~
+    - rename:
+        fields:
+          - from: "event.timezone"
+            to: "dissect.timezone"
+        ignore_missing: true
+        fail_on_error: false
+    - add_tags:
+        tags: [microsoft_exchange]
+        target: "xdr_log_type"
