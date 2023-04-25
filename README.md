@@ -1,6 +1,8 @@
 # XDR_scripts
 
 ##  A few custom BIOC signature
+- some LPE(s) 
+- PetitPotam (from Coercer)
 
 ## A few XQL queries which can be used for widgets
 
