@@ -1,0 +1,21 @@
+dataset = xdr_data // Using the xdr dataset
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4769
+| alter ServiceName = json_extract(action_evtlog_data_fields,"$.ServiceName") 
+| alter ServiceName = trim(ServiceName,"\"")
+| alter TicketEncryptionType = json_extract(action_evtlog_data_fields,"$.TicketEncryptionType")
+| alter TicketOptions= json_extract(action_evtlog_data_fields,"$.TicketOptions")
+| alter TargetUserName= json_extract(action_evtlog_data_fields,"$.TargetUserName")
+| alter IpAddress= json_extract(action_evtlog_data_fields,"$.IpAddress")
+| alter TicketEncryptionTypeName = ""
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x1", "DES-CBC-CRC", TicketEncryptionTypeName)
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x3", "DES-CBC-MD5", TicketEncryptionTypeName )
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x11", "AES128-CTS-HMAC-SHA1-96", TicketEncryptionTypeName)
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x12", "AES256-CTS-HMAC-SHA1-96", TicketEncryptionTypeName)
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x17", "RC4-HMAC", TicketEncryptionTypeName)
+| alter TicketEncryptionTypeName  = if(TicketEncryptionType CONTAINS "0x18", "RC4-HMAC-EXP", TicketEncryptionTypeName)	
+| alter TicketOptionsName = ""
+| alter TicketOptionsName  = if(TicketOptions CONTAINS "0x40810010", "Forwardable, Renewable, Canonicalize, Renewable-ok", TicketOptionsName)
+| alter TicketOptionsName  = if(TicketOptions CONTAINS "0x40810000", "Forwardable, Renewable, Canonicalize", TicketOptionsName)
+| alter TicketOptionsName  = if(TicketOptions CONTAINS "0x60810010", "Forwardable, Forwarded, Renewable, Canonicalize, Renewable-ok", TicketOptionsName)
+| fields Agent_Hostname, agent_ip_addresses , ServiceName , TargetUsername, IpAddress , TicketEncryptionType, TicketEncryptionTypeName,TicketOptions, TicketOptionsName, action_evtlog_data_fields
+| filter (ServiceName = "canarysqlsvc") 
