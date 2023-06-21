@@ -13,3 +13,7 @@
   fullmemorydump.py is as you might expect to run winpmem to get the entire memory dump for Forensic purpose.
 
 ## A few XDR Collector Filebeat configurations
+
+## A Python script uploading IOC to XDR tenant via API rest
+
+  XDR_loldriver.io_update_IOC.py
