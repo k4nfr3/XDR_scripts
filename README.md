@@ -21,3 +21,11 @@
 ## A Python script uploading IOC to XDR tenant via API rest
 
 - XDR_loldriver.io_update_IOC.py
+
+
+## My whish list of improvements for Cortex XDR  
+
+- Original filenames field in process events and other data
+- Driver load signature field (against BYOVD)
+- BIOC specific fields to report in a Alert (basically give in the Alert the fields you want to show to the operator)
+- Every hour or so, check your own subscription as a ETW provider (against BYOVD)
