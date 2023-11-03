@@ -1,0 +1,17 @@
+dataset = xdr_data 
+| filter EVENT_TYPE = RPC_CALL
+| filter event_rpc_interface_uuid = "{12345778-1234-ABCD-EF00-0123456789AB}" 
+| alter event_rpc_interface_name = "MSRPC_UUID_LSAT"
+| filter action_rpc_func_opnum != 62 // this is a not on the wire Opnum
+| alter action_rpc_func_name = ""
+| fields agent_hostname, agent_ip_addresses, actor_remote_ip, event_rpc_interface_uuid,event_rpc_interface_name, action_rpc_func_opnum, action_rpc_func_name
+| alter action_rpc_func_name = if(action_rpc_func_opnum =  44, "LsarOpenPolicy2", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 6, "LsarOpenPolicy", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 45, "LsarGetUserName", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 77, "LsarLookupNames4", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 68, "LsarLookupNames3", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 58, "LsarLookupNames2", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 14, "LsarLookupNames", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 76, "LsarLookupSids3", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 57, "LsarLookupSids2", action_rpc_func_name)
+| alter action_rpc_func_name = if(action_rpc_func_opnum = 15, "LsarLookupSids", action_rpc_func_name)
