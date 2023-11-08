@@ -1,0 +1,5 @@
+preset = xdr_agent_network 
+| filter action_remote_port = 88
+| filter (actor_process_image_name not in ("lsass.exe", "winlogon.exe", "backgroundTaskHost.exe", "taskhostw.exe", "svchost.exe")) 
+| fields actor_process_image_name, actor_process_image_path, action_local_ip, action_local_port, action_remote_ip, action_remote_port
+
