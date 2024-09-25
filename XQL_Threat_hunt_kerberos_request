@@ -1,3 +1,4 @@
+# Warning, this requires the XTH license
 preset = xdr_agent_network 
 | filter action_remote_port = 88
 | filter (actor_process_image_name not in ("lsass.exe", "winlogon.exe", "backgroundTaskHost.exe", "taskhostw.exe", "svchost.exe")) 
