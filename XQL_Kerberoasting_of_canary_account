@@ -1,3 +1,4 @@
+# Warning, this requires the XTH license
 dataset = xdr_data // Using the xdr dataset
 | filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4769
 | alter ServiceName = json_extract(action_evtlog_data_fields,"$.ServiceName") 
