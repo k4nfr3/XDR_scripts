@@ -1,6 +1,7 @@
-The proposed SQL query for EventId 4625 was missing the Logon Failure Codes
+# Warning, this requires the XTH license
+# The proposed SQL query for EventId 4625 was missing the Logon Failure Codes
 
-Here is a new proposal to add column FailCode and adds explaination in Failure_Reason
+# Here is a new proposal to add column FailCode and adds explaination in Failure_Reason
 
 dataset = xdr_data // Using the xdr dataset
  | filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4625 // Filtering by windows event log and id 4625
