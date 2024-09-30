@@ -1,3 +1,4 @@
+# Warning, this requires the XTH license
 dataset = xdr_data // Using the xdr dataset
 | filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4625 // Filtering by windows event log and id 4625
 | alter User_Name =arrayindex(regextract(action_evtlog_message, "Compte pour lequel l’ouverture.*\r\n.*\r\n.*Nom du compte.*?(\w.*)\r\n"),0)
