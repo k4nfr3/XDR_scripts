@@ -1,0 +1,9 @@
+# This requires XTH license
+dataset = xdr_data // Using the xdr dataset
+| filter event_type = ENUM.EVENT_LOG and action_evtlog_event_id = 4732
+| alter TargetUserName = replace(json_extract(action_evtlog_data_fields, "$.TargetUserName"),"\"","")
+| alter TargetDomainName = replace(json_extract(action_evtlog_data_fields, "$.TargetDomainName"),"\"","")
+| alter SubjectDomainName = replace(json_extract(action_evtlog_data_fields, "$.SubjectDomainName"),"\"","")
+| alter SubjectUserName = replace(json_extract(action_evtlog_data_fields, "$.SubjectUserName"),"\"","")
+| filter TargetDomainName= "Builtin"
+| filter TargetUserName= "Administrators" or TargetUserName= "Administrateurs"
