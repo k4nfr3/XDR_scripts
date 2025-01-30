@@ -77,7 +77,7 @@ def convert_bioc_to_md(file_path):
         # Read the second line (JSON content)
         json_content = json.loads(bioc_file.readline().strip()[1:-1])
         parseJSON(json_content, depth)
-        markdown.replace('#######', '######')
+        markdown = markdown.replace('#######', '######')
         # Convert JSON to pretty markup language (Markdown)
         #md_header = "## " + file_path + "\n\n"
         #md_content = markdown.markdown(json.dumps(json.loads(json_content), indent=4))
