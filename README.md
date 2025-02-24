@@ -1,4 +1,12 @@
-# XDR_scripts
+# XDR_scripts (no longer maintained)
+
+This repo is **no longer maintained !**  (24.02.2025)   
+  
+All new custom BIOC and custom Correlations rules will be published in a private repository.  
+If you want to be added to the private repo, contact me (email, twitter github), and I can add you to do but I require contributions as research is time consuming or a NDA.  
+Competing companies have used my signatures without my consent and without mentioning my work.  
+
+
 
 ##  A few custom BIOC signature
 - some LPE(s) 
